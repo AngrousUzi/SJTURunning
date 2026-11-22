@@ -3,6 +3,7 @@ import uuid
 import time
 import random
 from src.config import load_config
+from src.road_router import generate_road_route, polyline_cumdist, point_at_distance
 from utils.auxiliary_util import haversine_distance, log_output, TRACK_POINT_DECIMAL_PLACES, get_current_epoch_ms, SportsUploaderError
 
 def interpolate_points(start_lat, start_lon, end_lat, end_lon, speed_mps, interval_seconds):
@@ -197,6 +198,16 @@ def generate_running_data_payload(config, required_signpoints, point_rules_data,
     lat_rad = math.radians(start_lat)
     meters_per_degree_lon = 111111 * math.cos(lat_rad)
 
+    route = None
+    route_cum = None
+    if app_config.get("沿道路跑步", True):
+        route = generate_road_route(start_lat, start_lon, target_distance_m)
+        if route:
+            route_cum = polyline_cumdist(route)
+        else:
+            route = None
+            log_output("未能加载校园路网,回退为直线轨迹。", "warning", log_cb)
+
     full_interpolated_points_with_time = []
 
     current_locatetime_ms = config['START_TIME_EPOCH_MS'] if config.get('START_TIME_EPOCH_MS') is not None else get_current_epoch_ms()
@@ -209,9 +220,12 @@ def generate_running_data_payload(config, required_signpoints, point_rules_data,
         elapsed_sec = min(i * interval_seconds, total_duration_sec)
         traveled_m = min(elapsed_sec * speed_mps, target_distance_m)
 
-        delta_lon_deg = traveled_m / meters_per_degree_lon if meters_per_degree_lon != 0 else 0
-        point_lat = start_lat
-        point_lon = start_lon + delta_lon_deg
+        if route:
+            point_lat, point_lon = point_at_distance(route, route_cum, traveled_m)
+        else:
+            delta_lon_deg = traveled_m / meters_per_degree_lon if meters_per_degree_lon != 0 else 0
+            point_lat = start_lat
+            point_lon = start_lon + delta_lon_deg
 
         formatted_lat = f"{point_lat:.{TRACK_POINT_DECIMAL_PLACES}f}"
         formatted_lon = f"{point_lon:.{TRACK_POINT_DECIMAL_PLACES}f}"

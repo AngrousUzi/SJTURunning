@@ -20,6 +20,7 @@ a = Analysis(
         'src.info_dialog',
         'src.login',
         'src.config',
+        'src.road_router',
         'utils.auxiliary_util',
         'assets.resources_rc',
     ],

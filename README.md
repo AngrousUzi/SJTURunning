@@ -37,7 +37,7 @@
 
 ```bash
 # 安装依赖
-pip install PySide6 requests tenacity
+pip install PySide6 requests
 
 # 启动程序
 python qtui.py
@@ -112,10 +112,16 @@ SJTURunning/
 │   ├── login.py         # Jaccount 登录模块
 │   ├── api_client.py    # API 请求封装
 │   ├── data_generator.py# GPS 轨迹生成
+│   ├── road_router.py   # 沿校园道路生成跑步路线
 │   └── config.py        # 配置加载模块
+├── tools/
+│   └── build_campus_map.py  # 从 OpenStreetMap 生成校园路网
 ├── utils/               # 工具函数
 └── assets/              # 资源文件（图片等）
+    └── campus_roads.json    # 校园道路图（GCJ-02）
 ```
+
+> 🗺️ 生成的轨迹会沿校园道路行进（可通过 `config.json` 中的 `"沿道路跑步"` 开关控制），路网数据来自 OpenStreetMap（© OpenStreetMap contributors，ODbL 许可）。如需重新生成路网：`python tools/build_campus_map.py`
 
 ---
 

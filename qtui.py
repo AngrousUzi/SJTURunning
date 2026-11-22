@@ -700,6 +700,7 @@ class SportsUploaderUI(QWidget):
                 "固定跑步时间_分": self.fixed_min_spin.value(),
                 "随机时间范围_开始时": self.rand_start_spin.value(),
                 "随机时间范围_结束时": self.rand_end_spin.value(),
+                "沿道路跑步": True,
                 "起点纬度": 31.031599,
                 "起点经度": 121.442938,
                 "终点纬度": 31.0264,

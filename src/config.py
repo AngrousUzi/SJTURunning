@@ -3,7 +3,7 @@ import os
 import shutil
 import sys
 
-global_version = "2.1.1"
+global_version = "2.2.0"
 
 APP_NAME = "SJTURunning"
 
@@ -77,6 +77,7 @@ def load_config():
         "固定跑步时间_分": 0,
         "随机时间范围_开始时": 7,
         "随机时间范围_结束时": 20,
+        "沿道路跑步": True,
         "起点纬度": 31.031599,
         "起点经度": 121.442938,
         "终点纬度": 31.0264,
