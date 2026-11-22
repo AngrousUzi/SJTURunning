@@ -14,7 +14,6 @@ a = Analysis(
         'PySide6.QtGui',
         'PySide6.QtWidgets',
         'requests',
-        'tenacity',
         'src.main',
         'src.api_client',
         'src.data_generator',
